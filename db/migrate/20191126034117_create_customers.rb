@@ -5,7 +5,7 @@ class CreateCustomers < ActiveRecord::Migration[6.0]
       t.string :password_digest
       t.string :first_name
       t.string :last_name
-      t.int :phone
+      t.integer :phone
       t.string :address
       t.string :city
       t.references :province, null: false, foreign_key: true

@@ -9,6 +9,7 @@ class CreateOrders < ActiveRecord::Migration[6.0]
       t.float :total
       t.date :order_date
       t.references :product, null: false, foreign_key: true
+      t.references :customer, null: false, foreign_key: true
 
       t.timestamps
     end

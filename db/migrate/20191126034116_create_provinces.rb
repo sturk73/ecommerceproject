@@ -3,7 +3,7 @@ class CreateProvinces < ActiveRecord::Migration[6.0]
     create_table :provinces do |t|
       t.string :name
       t.string :abbrivation
-      t.int :pst
+      t.integer :pst
 
       t.timestamps
     end
