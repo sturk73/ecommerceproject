@@ -4,6 +4,7 @@ import './index.css';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import IndexPage from './imports/ui/index'
+import ViewProduct from './imports/ui/viewProduct'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const history = createBrowserHistory();
@@ -12,6 +13,7 @@ const routes = (
   <Router history={history}>
     <Switch>
       <Route exact path="/" component={IndexPage}/>
+      <Route exact path="/view-product" component={ViewProduct}/>
     </Switch>
   </Router>
 )

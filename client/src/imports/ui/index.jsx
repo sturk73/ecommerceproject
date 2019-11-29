@@ -25,6 +25,11 @@ const divStyle = {
   margin: '0 0 0 8',
 }
 
+const img = {
+  width: '300px',
+  height: '300px',
+}
+
 class IndexPage extends Component{
   constructor(){
     super();
@@ -40,17 +45,23 @@ class IndexPage extends Component{
     })
   }
 
+  onClickLinkHandler = (product)=> (e)=> {
+    e.preventDefault();
+    console.log(product)
+    this.props.history.push('/view-product', {product});
+}
+
   renderProducts() {
     const product = this.state.data.map((product) => {
       return (
-        <div className="col-md" style={divStyle}>
+        <div className="col-md-4" style={divStyle}>
           <Card className="col-md" style={divStyle}>
-            {product.image? <img src={product.image.url} /> : <img src="http://www.kovairealestateservices.com/uploads/thumbs/noimage.jpg" alt="No Image" />}
+            {product.image? <img style={img} src={product.image.url} /> : <img src="http://www.kovairealestateservices.com/uploads/thumbs/noimage.jpg" alt="No Image" />}
             <CardBody>
               <CardTitle>{product.name}</CardTitle>
               <CardSubtitle>${product.product_price} + Tax</CardSubtitle>
               <div className="row">
-                <div className="col-md"><Button>More Info</Button></div>
+                <div className="col-md"><Button onClick={this.onClickLinkHandler(product)}>More Info</Button></div>
                 <div className="col-md"><Button>Add To Cart</Button></div>
               </div>
 
