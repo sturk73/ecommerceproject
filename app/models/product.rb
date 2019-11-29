@@ -9,4 +9,8 @@ class Product < ApplicationRecord
   def thumbnail
     image.variant(resize: '300x300')
   end
+
+  def fullSize
+    image.variant(resize: '800x800')
+  end
 end

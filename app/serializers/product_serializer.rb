@@ -14,6 +14,6 @@ class ProductSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    url_for(object.thumbnail)
+    url_for(object.image)
   end
 end
