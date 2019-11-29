@@ -2,11 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { createBrowserHistory } from 'history';
 import IndexPage from './imports/ui/index'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
+const history = createBrowserHistory();
 
 const routes = (
-  <Router>
+  <Router history={history}>
     <Switch>
       <Route exact path="/" component={IndexPage}/>
     </Switch>
