@@ -70,7 +70,7 @@ class IndexPage extends Component {
 
     const categories = this.state.categories.map((category) => {
       return (
-        <DropdownItem onClick={this.setCategory(category)}>{category.name}</DropdownItem>
+        <DropdownItem key={category.id} onClick={this.setCategory(category)}>{category.name}</DropdownItem>
       )
     })
 
@@ -108,7 +108,7 @@ class IndexPage extends Component {
   renderProducts() {
     const product = this.state.filteredProducts.map((product) => {
       return (
-        <div className="col-md-4" style={divStyle}>
+        <div className="col-md-4" style={divStyle} key={product.id}>
           <Card className="col-md" style={divStyle}>
             {product.image ? <img style={img} src={product.image.url} /> : <img src="http://www.kovairealestateservices.com/uploads/thumbs/noimage.jpg" alt="No Image" />}
             <CardBody>
