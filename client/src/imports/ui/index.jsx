@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import {
   Collapse,
   Navbar,
@@ -20,6 +20,7 @@ import CardBody from 'reactstrap/lib/CardBody';
 import CardText from 'reactstrap/lib/CardText';
 import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import Pagination from './pagination.jsx'
 
 
 const divStyle = {
@@ -35,12 +36,22 @@ class IndexPage extends Component {
   constructor() {
     super();
     this.state = {
-      dropdownOpen: false
+      dropdownOpen: false,
+      shoppingCart: [],
+      currentPage : 1
     }
-
   }
 
   async componentDidMount() {
+
+
+    const shoppingCart = sessionStorage.getItem("ShoppingCart")
+    if(sessionStorage.getItem("ShoppingCart") !== null){
+      this.setState({
+        shoppingCart : JSON.parse(shoppingCart)
+      })
+    }
+
     const productResponse = await window.fetch('/api/products')
     const products = await productResponse.json()
 
@@ -59,8 +70,33 @@ class IndexPage extends Component {
     this.props.history.push('/view-product', { product });
   }
 
-  renderCategories() {
+  addToCart = (product) => (e) => {
+    const cartItem = product
 
+    const shoppingCart = this.state.shoppingCart
+
+    if(shoppingCart.includes(product)){
+      cartItem.quantityInCart += 1
+    }
+    else{
+      cartItem.quantityInCart = 1
+      shoppingCart.push(cartItem)
+    }
+
+    this.setState({
+      shoppingCart
+    })
+
+    sessionStorage.setItem("ShoppingCart", JSON.stringify(this.state.shoppingCart))
+  }
+
+  paginate = (currentPage) => {
+    this.setState({
+      currentPage
+    })
+  }
+
+  renderCategories() {
 
     const toggle = () => {
       this.setState({
@@ -106,7 +142,16 @@ class IndexPage extends Component {
   }
 
   renderProducts() {
-    const product = this.state.filteredProducts.map((product) => {
+
+    const products = this.state.products
+
+    let lastProductIndex = this.state.currentPage * 9
+
+    let firstPostIndex = lastProductIndex - 9
+
+    let currentProducts = products.slice(firstPostIndex, lastProductIndex)
+
+    const product = currentProducts.map((product) => {
       return (
         <div className="col-md-4" style={divStyle} key={product.id}>
           <Card className="col-md" style={divStyle}>
@@ -116,7 +161,7 @@ class IndexPage extends Component {
               <CardSubtitle>${product.product_price} + Tax</CardSubtitle>
               <div className="row">
                 <div className="col-md"><Button onClick={this.onClickLinkHandler(product)}>More Info</Button></div>
-                <div className="col-md"><Button>Add To Cart</Button></div>
+                <div className="col-md"><Button onClick={this.addToCart(product)}>Add To Cart</Button></div>
               </div>
 
             </CardBody>
@@ -146,6 +191,7 @@ class IndexPage extends Component {
           {this.renderCategories()}
         </div>
         <div>
+          <Pagination productsPerPage="9" totalProducts={this.state.products.length} paginate={ this.paginate} />
           {this.renderProducts()}
         </div>
 
