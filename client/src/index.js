@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import IndexPage from './imports/ui/index'
 import ViewProduct from './imports/ui/viewProduct'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import ShoppingCart from './imports/ui/shoppingCart';
 
 const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ const routes = (
     <Switch>
       <Route exact path="/" component={IndexPage}/>
       <Route exact path="/view-product" component={ViewProduct}/>
+      <Route exact path="/shopping-cart" component={ShoppingCart}/>
     </Switch>
   </Router>
 )
