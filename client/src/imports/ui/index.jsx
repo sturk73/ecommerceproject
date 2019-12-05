@@ -21,6 +21,7 @@ import CardText from 'reactstrap/lib/CardText';
 import CardSubtitle from 'reactstrap/lib/CardSubtitle';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import Pagination from './pagination.jsx'
+import Search from './search'
 
 
 const divStyle = {
@@ -38,7 +39,8 @@ class IndexPage extends Component {
     this.state = {
       dropdownOpen: false,
       shoppingCart: [],
-      currentPage : 1
+      currentPage : 1,
+      searchString: ""
     }
   }
 
@@ -96,6 +98,12 @@ class IndexPage extends Component {
     })
   }
 
+  handleChange = (searchString) => {
+    this.setState({
+      searchString
+    })
+  }
+
   renderCategories() {
 
     const toggle = () => {
@@ -143,7 +151,14 @@ class IndexPage extends Component {
 
   renderProducts() {
 
-    const products = this.state.products
+    let products = this.state.filteredProducts
+
+    if(this.state.searchString !== "")
+    {
+      console.log("Test")
+      products = products.filter((product) => {console.log(product.name.toUpperCase()); console.log(this.state.searchString.toUpperCase()); return (product.name.toUpperCase().includes(this.state.searchString.toUpperCase()) || product.description.toUpperCase().includes(this.state.searchString.toUpperCase()))})
+    }
+    console.log(products)
 
     let lastProductIndex = this.state.currentPage * 9
 
@@ -187,8 +202,13 @@ class IndexPage extends Component {
 
     return (
       <div className="container">
-        <div>
-          {this.renderCategories()}
+        <div className="row">
+          <div className="col-md-3">
+            {this.renderCategories()}
+          </div>
+          <div className="col-md-9">
+            <Search handleChange={this.handleChange}/>
+          </div>
         </div>
         <div>
           <Pagination productsPerPage="9" totalProducts={this.state.products.length} paginate={ this.paginate} />
